@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://unpkg.com/three@0.159.0/build/three.module.js"></script>
+    <script src="https://unpkg.com/three@0.159.0//examples/jsm/"></script> -->
+    <style>
+        body {
+            background-color: #bfe3dd;
+            color: #000;
+        }
+
+        a {
+            color: #2983ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+            }
+        }
+      </script>
+    <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
+    <script src="../build/three-shp-render.umd.js"></script>
+    <script type="module">
+        import * as THREE from 'three';
+        import Stats from 'https://unpkg.com/three@0.159.0/examples/jsm/libs/stats.module.js';
+
+        import { OrbitControls } from 'https://unpkg.com/three@0.159.0/examples/jsm/controls/OrbitControls.js';
+        // import {ShpFileRender , ShapeOption} from '../build/three-shp-render.es.js'
+        const {ShpFileRender , ShapeOption} = threeShpRender
+        const clock = new THREE.Clock();
+        const container = document.getElementById( 'container' );
+
+        const stats = new Stats();
+        container.appendChild( stats.dom );
+
+        const renderer = new THREE.WebGLRenderer( { antialias: true ,  logarithmicDepthBuffer : true} );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.5, 1000000 );
+        camera.position.set( 5, 2, 8 );
+
+        const controls = new OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 0.5, 0 );
+        controls.update();
+        const initLight= ()=>{
+              const light = new THREE.DirectionalLight(0xffffff, 0.5);
+              light.position.set(20, 20, 20);
+              scene.add(light)
+              scene.add(new THREE.AmbientLight(0xe0f7fa, 0.5))
+
+            }
+        initLight()
+        const getLinerColor = ()=>{
+            const c=  document.createElement("canvas")
+            const ctx=c.getContext("2d");
+            //创建一个线条渐变
+            const jb=ctx.createLinearGradient(0,0,100,0);
+            jb.addColorStop(0, '#ffd89b');//参数为0<stop<1,color
+            jb.addColorStop(1, "#19547b");
+            //填充渐变
+            ctx.fillStyle=jb;
+            ctx.fillRect(0,0,255 ,1);//参数依次为：x,y,width,height 
+            return ctx 
+        }
+
+        const ctx = getLinerColor()
+        const stet = 255 / 30
+        const heightMap2 = new Array(30).fill(0).map((item , index)=>{
+        const color = ctx.getImageData(index * stet , 0 , 1 , 1)
+        return {
+            range : [index * 10 , (index + 1) * 10 ],
+            color : `rgb(${color.data[0]} , ${color.data[1]},${color.data[2]})`
+        }
+        })
+        const baseOption = {
+            ...ShapeOption,
+            url : `${location.href}/data/polyline.zip`,//`${location.href}/data/Export_Output.zip`
+            polygonStyleCallBack : (fe)=>{
+            const color = heightMap2.find((item)=>{return item.range[0] <= fe.properties.Elevation && item.range[1] >= fe.properties.Elevation}).color || 'rgb(91,153,150)'
+            console.log("当前选择的颜色",  fe , color ,  fe.properties.Elevation)
+            return {
+                color : color,
+                extrudeHeight : fe.properties.Elevation
+            }
+            }
+        }
+        baseOption.style.point.size = 50
+        baseOption.style.point.sizeAttenuation = false
+        baseOption.style.point.color = "yellow"
+        baseOption.style.polyline.color = 'rgb(10 , 124 , 25)'
+        baseOption.style.polyline.lineWidth = 3
+        const shpPolygon = new ShpFileRender({
+        ...baseOption , 
+        url : `http://127.0.0.1:5500/data/shanghai_part.zip`
+        })
+        shpPolygon.init().then(()=>{
+            shpPolygon.toOrigin()
+            scene.add(shpPolygon)
+        })
+// const shpPolyline = new ShpFileRender(
+
+
+        window.onresize = function () {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+        };
+
+
+        function animate() {
+
+            requestAnimationFrame( animate );
+
+            const delta = clock.getDelta();
+
+            controls.update();
+
+            stats.update();
+
+            renderer.render( scene, camera );
+
+        }
+
+        animate()
+
+
+    </script>
+</body>
+</html>
