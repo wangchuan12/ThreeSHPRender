@@ -1,4 +1,4 @@
-import { MeshLineMaterial } from "three.meshline";
+import { MeshLineMaterial } from "../base/mesh-line";
 import { fixedVertexShader } from "./fixed-mesh-line-shader";
 
 export default class PolylineMaterial extends MeshLineMaterial{

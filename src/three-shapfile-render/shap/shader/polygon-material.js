@@ -1,6 +1,6 @@
-import { MeshPhongMaterial } from "three";
+import * as THREE  from 'three'
 import { vertex } from "./polygon-shader";
-export default class PolygonMaterial extends MeshPhongMaterial{
+export default class PolygonMaterial extends THREE.MeshPhongMaterial{
     constructor(option){
         super(option)
         this._init()

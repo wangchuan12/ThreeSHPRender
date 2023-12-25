@@ -1,6 +1,6 @@
 import { BufferAttribute, Color, Object3D } from "three";
 import Convert from "./convert";
-import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { mergeGeometries } from "./base/BufferGeometryUtils";
 import ShapeOption from "./base/shape-option";
 export default class Polygon extends Object3D{
     /**
@@ -40,7 +40,7 @@ export default class Polygon extends Object3D{
         const color = new Color(this.color)
         const colorArr = []
         for (let i = 0 ; i < position.array.length ;i += 3) {
-            colorArr.push(color.r , color.g , color.b)
+            colorArr.push(color.r * 255 , color.g * 255 , color.b * 255)
         }
 
         const att = new BufferAttribute(new Float32Array(colorArr) , 3)

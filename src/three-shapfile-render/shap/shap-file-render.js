@@ -1,4 +1,4 @@
-import {  Object3D, Vector3 } from "three";
+import {  Object3D } from "three";
 import ShapParse from "./shap-parse";
 import { Box3 } from "three";
 import ShapeOption from "./base/shape-option";

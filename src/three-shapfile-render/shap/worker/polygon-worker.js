@@ -1,6 +1,6 @@
 import { BufferAttribute, Vector3 } from "three"
 import Convert from "../convert"
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils"
+import { mergeGeometries } from "../base/BufferGeometryUtils";
 let textEncoder = new TextEncoder()
 const transferGeo = (geometry)=>{
     let string = JSON.stringify(geometry.groups)

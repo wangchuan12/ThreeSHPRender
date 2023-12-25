@@ -1,6 +1,6 @@
 import { BufferAttribute, BufferGeometry } from "three";
-import { MeshLine } from "three.meshline";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
+import { MeshLine } from "../base/mesh-line";
+import { mergeGeometries } from "../base/BufferGeometryUtils";
 
 const textDecoder = new TextDecoder()
 
@@ -102,7 +102,6 @@ onmessage = (e)=>{
                      if (style) {
                          meshline.setGeometry(bufferGeometry , ()=> style.width)
                          setGeometryColor(meshline , style.color)
-                         console.log(meshline)
                      } else {
                          meshline.setGeometry(bufferGeometry)
                      }

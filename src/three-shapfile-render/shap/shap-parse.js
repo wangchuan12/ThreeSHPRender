@@ -1,9 +1,9 @@
-import { BufferAttribute, BufferGeometry, DoubleSide, Mesh, Vector3 , Color, Vector2, Object3D, Points, TextureLoader, SRGBColorSpace, AdditiveBlending, NormalBlending} from 'three'
+import { BufferAttribute, BufferGeometry, DoubleSide, Mesh, Vector3 , Color, Vector2, Object3D, Points, TextureLoader, SRGBColorSpace, AdditiveBlending, NormalBlending, MeshPhongMaterial} from 'three'
 import Deffer from '../util/deffer'
 import shp from "shpjs/dist/shp"
 import Polygon from './polygon'
 import { toMercator } from '@turf/projection'
-import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { mergeGeometries } from "./base/BufferGeometryUtils";
 import Polyline from './polyline'
 import Point from './point'
 import ShapeOption from "./base/shape-option";
@@ -165,7 +165,6 @@ export default class ShapParse{
                 bufferGeometry.setIndex(ShapParse.arrayBufferToAttr(geometry.index , 1))
                 res.point = null
                 res.polygon = null
-                console.log(bufferGeometry , this.material)
                 res.polyline.add(
                     new Mesh(bufferGeometry , this.material)
                 )
@@ -292,7 +291,7 @@ export default class ShapParse{
         const pointStyle = this.option.style.point
         if (!define(pointStyle)) return
 
-        if (polylineStyle.lighting) {
+        if (pointStyle.lighting) {
             this.material.blending = AdditiveBlending
         } else {
             this.material.blending = NormalBlending

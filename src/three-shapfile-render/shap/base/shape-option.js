@@ -21,7 +21,7 @@ const ShapeOption = {
         },
         point : {
             color :  "rgb(255 , 255,255)",
-            map : '/tex/spark1.png',
+            map : null,
             size : 1000,
             sizeAttenuation : true,
             transparent : true,

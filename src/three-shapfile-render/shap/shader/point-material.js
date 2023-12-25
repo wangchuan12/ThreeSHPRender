@@ -8,7 +8,6 @@ export default class PointMaterial extends PointsMaterial{
     }
     _init(){
         this.onBeforeCompile = (shader)=>{
-            console.log(shader)
             shader.vertexShader = shader.vertexShader.replace(
                 '#include <common>' , size_vertex_define
             )

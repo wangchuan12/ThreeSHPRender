@@ -1,6 +1,6 @@
 import { BufferAttribute, BufferGeometry, Color, Object3D } from "three";
-import { MeshLine } from 'three.meshline';
-import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { MeshLine } from './base/mesh-line';
+import { mergeGeometries } from "./base/BufferGeometryUtils";
 import ShapeOption from './base/shape-option'
 const polylineColor = new Color()
 export default class Polyline extends Object3D{
@@ -61,14 +61,12 @@ export default class Polyline extends Object3D{
                     if (style) {
                         meshline.setGeometry(bufferGeometry , ()=> style.width)
                         this.setGeometryColor(meshline , styleColor)
-                        console.log(meshline)
                     } else {
                         meshline.setGeometry(bufferGeometry)
                     }
                     lines.push(meshline)
                 })
                 this.geometry = mergeGeometries(lines , true)
-                console.log(this.geometry)
             } else {
                 for (let i = 0 ; i < geo.coordinates.length; i++) {
                     tem.push(geo.coordinates[i][0] , geo.coordinates[i][1] , 0)
