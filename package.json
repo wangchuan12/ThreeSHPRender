@@ -1,9 +1,9 @@
 {
   "name": "three-shp-render",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.6",
   "type": "module",
-  "files": ["/build/three-shp-render.es.js" , "/build/three-shp-render.umd.js" , "/build/worker"],
+  "files": ["/build/three-shp-render.es.js" , "/build/three-shp-render.umd.js" ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +17,25 @@
     "three.meshline": "^1.4.0",
     "vue": "^3.3.8"
   },
+  "keywords": [
+    "three",
+    "three.js",
+    "javascript",
+    "3d",
+    "virtual-reality",
+    "augmented-reality",
+    "webgl",
+    "webgl2",
+    "webaudio",
+    "webgpu",
+    "webxr",
+    "canvas",
+    "svg",
+    "html5",
+    "shp",
+    "SHP",
+    "shapefile"
+  ],
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",
     "vite": "^5.0.0"

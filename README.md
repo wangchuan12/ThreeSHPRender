@@ -22,7 +22,9 @@
 
 [shp-polygon (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-polygon.html)
 
-[shp-polyline (wangchuan12.github.io)]([Document (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-polyline.html))
+[shp-polyline (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-polyline.html))
+
+[shp-polygon-worker (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-polygon-worker.html)
 
 # 如何使用
 
