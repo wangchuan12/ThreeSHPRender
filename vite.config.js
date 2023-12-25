@@ -10,16 +10,21 @@ export default defineConfig({
       name : "ThreeShpRender",
       fileName : (formate)=>{return `three-shp-render.${formate}.js`}
     },
-    sourcemap : true,
+    assetsDir : './worker/',
+    sourcemap : false,
+    esbuild: {
+      drop: ["console", "debugger"],
+    },
     rollupOptions : {
       external : ['three'],
+      treeshake : "smallest",
       output : {
         globals : {
           three : 'THREE'
         }
       },
     },
-    outDir : 'public/build',
+    outDir : './build',
   },
   server : {
     host : '0.0.0.0'
