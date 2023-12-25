@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shp-polygon</title>
+    <title>shp-polygon-worker</title>
     <!-- <script src="https://unpkg.com/three@0.159.0/build/three.module.js"></script>
     <script src="https://unpkg.com/three@0.159.0//examples/jsm/"></script> -->
     <style>
@@ -68,7 +68,8 @@
         })
         const baseOption = {
             ...ShapeOption,
-            url : `http://${location.host}/public/data/polygon.zip`,
+            useWorker : true,
+            url : `http://${location.host}/public/data/shanghai_part.zip`,
             polygonStyleCallBack : (fe)=>{
             const color = heightMap2.find((item)=>{return item.range[0] <= fe.properties.Elevation && item.range[1] >= fe.properties.Elevation})?.color || 'rgb(91,153,150)'
             return {

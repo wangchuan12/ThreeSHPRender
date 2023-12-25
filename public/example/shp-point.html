@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shp-polygon</title>
+    <title>shp-point</title>
     <!-- <script src="https://unpkg.com/three@0.159.0/build/three.module.js"></script>
     <script src="https://unpkg.com/three@0.159.0//examples/jsm/"></script> -->
     <style>
@@ -34,10 +34,10 @@
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.5, 1000000 );
-        camera.position.set(-4874.021470855053, 4133.281652538446, 6500.676402522459)
         const controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-        window.camera = camera
+        camera.position.set(43626.15329498322, 78282.16413159578, 59745.12441639822)
+        camera.lookAt(new THREE.Vector3(43042.70795206267, -47671.44123431959, 39981.43394362926))
+        controls.target.copy(new THREE.Vector3(43042.70795206267, -47671.44123431959, 39981.43394362926))
         const initLight= ()=>{
               const light = new THREE.DirectionalLight(0xffffff, 0.5);
               light.position.set(200, 200, 200);
@@ -59,35 +59,36 @@
         }
         const ctx = getLinerColor()
         const stet = 255 / 30
-        const heightMap2 = new Array(30).fill(0).map((item , index)=>{
-        const color = ctx.getImageData(index * stet , 0 , 1 , 1)
-        return {
-            range : [index * 10 , (index + 1) * 10 ],
-            color : `rgb(${color.data[0]} , ${color.data[1]},${color.data[2]})`
-        }
+
+        const colorSizeMap = new Array(30).fill(0).map((item , index)=>{
+            const color = ctx.getImageData(index * stet , 0 , 1 , 1)
+            return {
+                range : [index  , (index + 1) ],
+                color : `rgb(${color.data[0]} , ${color.data[1]},${color.data[2]})`,
+                size : (index + 1) * 10
+            }
         })
+
         const baseOption = {
             ...ShapeOption,
-            url : `http://${location.host}/public/data/polygon.zip`,
-            polygonStyleCallBack : (fe)=>{
-            const color = heightMap2.find((item)=>{return item.range[0] <= fe.properties.Elevation && item.range[1] >= fe.properties.Elevation})?.color || 'rgb(91,153,150)'
-            return {
-                color : color,
-                extrudeHeight : fe.properties.Elevation
-            }
-            }
+            url : `http://${location.host}/public/data/point.zip`,
+            pointStyleCallBack : (fe)=>{
+                const item = colorSizeMap[Math.floor(Math.random() * 30)]
+                return {
+                    color : item?.color || 'rgb(91,153,150)',
+                    size : item?.size || 10
+                }
+            },
         }
-        baseOption.style.point.size = 50
+        baseOption.style.point.map = `http://${location.host}/public/tex/spark1.png`
+        baseOption.style.point.size = 4
         baseOption.style.point.sizeAttenuation = false
-        baseOption.style.point.color = "yellow"
-        baseOption.style.polyline.color = 'rgb(10 , 124 , 25)'
-        baseOption.style.polyline.lineWidth = 3
-        baseOption.style.polygon.color= 'rgb(255 ,255, 255)'
+        baseOption.style.point.color ='rgb(255 , 255, 255)'
+        const shpPoint = new ShpFileRender( baseOption)
         console.time('loadTime')
-        const shpPolygon = new ShpFileRender( baseOption)
-        shpPolygon.init().then(()=>{
-            shpPolygon.toOrigin()
-            scene.add(shpPolygon)
+        shpPoint.init().then(()=>{
+            shpPoint.toOrigin()
+            scene.add(shpPoint)
             console.timeEnd('loadTime')
         })
 
@@ -116,5 +117,5 @@
 
         animate()    
     </script>
-</body>
+
 </html>
