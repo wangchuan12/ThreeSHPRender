@@ -79,6 +79,40 @@ shpPolygon.init().then(()=>{
 
 ```
 
+# 结合webworker使用
+
+1 首先从[ThreeSHPRender/worker at main · wangchuan12/ThreeSHPRender (github.com)](https://github.com/wangchuan12/ThreeSHPRender/tree/main/worker)此地址获取worker文件夹下的worker文件
+
+2 然后将这个文件夹放置在你url的根目录下，worker的访问地址为"http://${location.host}/worker/;;;;;“
+
+3 然后开启webworker配置选项
+
+```js
+import {ShpFileRender , ShapeOption} from 'three-shp-render'
+import {Scene} from 'three'
+
+const scene = new Scene()
+const baseOption = {
+    ...ShapeOption,
+    useWorker : true,// 开启webworker
+    url : `http://${location.host}/public/data/polygon.zip`,
+    polygonStyleCallBack : (fe)=>{
+        return {
+            color : 'rgb(255 , 0 ,0)', // 自定义颜色
+            extrudeHeight : fe.properties.Elevation // 根据属性自定义高度
+        }
+    }
+}
+
+const shpPolygon = new ShpFileRender( baseOption)
+shpPolygon.init().then(()=>{
+    shpPolygon.toOrigin()
+    scene.add(shpPolygon)
+})
+```
+
+
+
 # 参数定义
 
 ## ShapeOption
@@ -171,6 +205,10 @@ export default ShapeOption
 ### destroy
 
 用来销毁图形并释放内存
+
+# 注意事项
+
+##    shpfile的文件地址务必传入绝对地址
 
 # 参考
 
