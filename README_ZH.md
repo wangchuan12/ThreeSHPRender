@@ -85,7 +85,7 @@ shpPolygon.init().then(()=>{
 
 1 首先从[ThreeSHPRender/worker at main · wangchuan12/ThreeSHPRender (github.com)](https://github.com/wangchuan12/ThreeSHPRender/tree/main/worker)此地址获取worker文件夹下的worker文件
 
-2 然后将这个文件夹放置在你url的根目录下，worker的访问地址为"http://${location.host}/worker/....“
+2 然后将这个文件夹放置在你url的根目录下，worker的访问地址为"http://${location.host}/worker/....。“
 
 3 然后开启webworker配置选项
 

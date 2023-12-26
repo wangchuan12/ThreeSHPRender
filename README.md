@@ -4,7 +4,7 @@
 
 three-shp-render is a library for rendering Shapefiles (SHP) use three.js
 
-**Read this in other languages: [English](README.md), [中文](README_zh.md).**
+**Read this in other languages: [English](README.md), [中文](README_ZH.md).**
 
 ## render point feature
 
