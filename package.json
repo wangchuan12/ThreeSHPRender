@@ -1,9 +1,9 @@
 {
   "name": "three-shp-render",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.1.8",
   "type": "module",
-  "files": ["/build/three-shp-render.es.js" , "/build/three-shp-render.umd.js" ],
+  "files": ["/build/three-shp-render.es.js" , "/build/three-shp-render.umd.js" , "README_ZH.md"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -20,18 +20,6 @@
   "keywords": [
     "three",
     "three.js",
-    "javascript",
-    "3d",
-    "virtual-reality",
-    "augmented-reality",
-    "webgl",
-    "webgl2",
-    "webaudio",
-    "webgpu",
-    "webxr",
-    "canvas",
-    "svg",
-    "html5",
     "shp",
     "SHP",
     "shapefile"

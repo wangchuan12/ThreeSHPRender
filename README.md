@@ -1,22 +1,24 @@
-# 简介
 
-**ThreeShpFileRender 是一个用来在浏览器渲染shapefile的库。一些效果如下。**
 
-## 渲染点
+# three-shp-render 
+
+three-shp-render is a library for rendering Shapefiles (SHP) use three.js
+
+**Read this in other languages: [English](README.md), [中文](README_zh.md).**
+
+## render point feature
 
 ![image-20231225212310725](https://wangchuan12.github.io/public/example/image-point.png)
 
-## 渲染面
+## render polygon feature
 
 ![image-20231225212425616](https://wangchuan12.github.io/public/example/image-polygon.png)
 
-## 渲染线
+## render polyline feature
 
 ![image-20231225212528317](https://wangchuan12.github.io/public/example/image-polyline.png)
 
-## 示例
-
-链接如下
+## sample
 
 [shp-point (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-point.html)
 
@@ -26,27 +28,29 @@
 
 [shp-polygon-worker (wangchuan12.github.io)](https://wangchuan12.github.io/public/example/shp-polygon-worker.html)
 
-# 如何使用
+# How to use
 
-## 一种是直接引入文件
+## use umd files directly
 
 ```html
 <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
 <script src="../build/three-shp-render.umd.js"></script>
 <script >
     const {ShpFileRender , ShapeOption} = ThreeShpRender
-    const scene = new THREE.Scene()
+    const scene = new THREE.Scene() // init three.js scene
+    // Prepare the style for rendering the shp file
     const baseOption = {
         ...ShapeOption,
-        url : `http://${location.host}/public/data/polygon.zip`,
-        polygonStyleCallBack : (fe)=>{
+        url : `http://${location.host}/public/data/polygon.zip`, // shp file address
+        //fe is a geojson format of data that contains the geometry and attribute information of the elements
+        polygonStyleCallBack : (fe)=>{ 
             return {
-                color : 'rgb(255 , 0 ,0)', // 自定义颜色
-                extrudeHeight : fe.properties.Elevation // 根据属性自定义高度
+                color : 'rgb(255 , 0 ,0)', // custom colors
+                extrudeHeight : fe.properties.Elevation // Customize the height according to the property
             }
         }
     }
- 
+    
     const shpPolygon = new ShpFileRender( baseOption)
     shpPolygon.init().then(()=>{
         shpPolygon.toOrigin()
@@ -55,20 +59,28 @@
 </script>
 ```
 
-## 一种是基于npm模块
+## Use npm
+
+use **npm i three-shp-render** to install this moudle.
+
+```js
+npm i three-shp-render
+```
 
 ```js
 import {ShpFileRender , ShapeOption} from 'three-shp-render'
 import {Scene} from 'three'
 
 const scene = new Scene()
+// Prepare the style for rendering the shp file
 const baseOption = {
     ...ShapeOption,
     url : `http://${location.host}/public/data/polygon.zip`,
+    //fe is a geojson format of data that contains the geometry and attribute information of the elements
     polygonStyleCallBack : (fe)=>{
         return {
-            color : 'rgb(255 , 0 ,0)', // 自定义颜色
-            extrudeHeight : fe.properties.Elevation // 根据属性自定义高度
+            color : 'rgb(255 , 0 ,0)', // custom colors
+            extrudeHeight : fe.properties.Elevation // Customize the height according to the property
         }
     }
 }
@@ -81,13 +93,13 @@ shpPolygon.init().then(()=>{
 
 ```
 
-# 结合webworker使用
+# webworker
 
-1 首先从[ThreeSHPRender/worker at main · wangchuan12/ThreeSHPRender (github.com)](https://github.com/wangchuan12/ThreeSHPRender/tree/main/worker)此地址获取worker文件夹下的worker文件
+1 from [ThreeSHPRender/worker at main · wangchuan12/ThreeSHPRender (github.com)](https://github.com/wangchuan12/ThreeSHPRender/tree/main/worker)to get worker files.
 
-2 然后将这个文件夹放置在你url的根目录下，worker的访问地址为"http://${location.host}/worker/;;;;;“
+2  Then place the folder at the root of your url, where the worker can be accessed at "http://${location.host}/worker/.... "
 
-3 然后开启webworker配置选项
+3  Then open the webworker configuration option
 
 ```js
 import {ShpFileRender , ShapeOption} from 'three-shp-render'
@@ -96,12 +108,12 @@ import {Scene} from 'three'
 const scene = new Scene()
 const baseOption = {
     ...ShapeOption,
-    useWorker : true,// 开启webworker
+    useWorker : true,// open webworker
     url : `http://${location.host}/public/data/polygon.zip`,
     polygonStyleCallBack : (fe)=>{
         return {
-            color : 'rgb(255 , 0 ,0)', // 自定义颜色
-            extrudeHeight : fe.properties.Elevation // 根据属性自定义高度
+            color : 'rgb(255 , 0 ,0)', // custom colors
+            extrudeHeight : fe.properties.Elevation // Customize the height according to the property
         }
     }
 }
@@ -115,63 +127,63 @@ shpPolygon.init().then(()=>{
 
 
 
-# 参数定义
+# parameter definition
 
 ## ShapeOption
 
-**以下参数为默认参数，如需修改建议拷贝后修改**
+**The following parameters are default. If you need to modify them,  advised to copy and modify them.**
 
 ```js
 const ShapeOption = { 
-    url : "", // 一个url 指定 shp文件的地址，注意请填入绝对地址
-    useWorker : false, // 是否是用webwoker 进行加速 true 为 使用webworker false 为不使用
+    url : "", // A url specifies the address of the shp file, be sure to enter the absolute address
+    useWorker : false, // Whether to use webwoker for acceleration true to use webworker false to not use
     style : {
-        // 面样式
+        // polygon style
         polygon : {
-            extrudeHeight : 1 , // 面突起的高度， 单位为米
-            color :  "rgb(255 , 255,255)", // 面的颜色
+            extrudeHeight : 1 , // The height of a polygon, in meters
+            color :  "rgb(255 , 255,255)", //polygon color
         },
-        // 线样式
+        // polyline style
         polyline : {
-            color :  "rgb(255 , 255,255)", // 线的颜色
-            lineWidth : 1, // 线的宽度
-            map: null, // 线的贴图
-            useMap: false, // 是否使用贴图为线着色
-            resolution: [window.innerWidth , window.innerHeight], // 当前画布大小
-            sizeAttenuation: false, // 是否随相机缩放
-            depthWrite: false, // 是否写入深度
-            depthTest: false, // 是否进行深度探测
-            transparent: false, // 是否开启透明度
-            lighting : true // 是否点亮图形 ， 开启此项后能点亮图形
+            color :  "rgb(255 , 255,255)", // plyline color
+            lineWidth : 1, // polyline width
+            map: null, // polyline texture
+            useMap: false, // Whether to use maps to color lines
+            resolution: [window.innerWidth , window.innerHeight], //  Current canvas size
+            sizeAttenuation: false, // Whether to scale with the camera
+            depthWrite: false, // Write depth or not
+            depthTest: false, // Whether to conduct depth detection
+            transparent: false, // Whether to enable transparency
+            lighting : true // Whether to light the graphics. After this option is enabled, the graphics can be lit
         },
-        // 点样式
+        // point style
         point : {
-            color :  "rgb(255 , 255,255)",// 点的颜色
-            map : null, // 点的贴图
-            size : 1000, // 点的大小
-            sizeAttenuation : true,// 是否随相机缩放
-            transparent : true,// 是否开启透明度
-            depthTest : false,// 是否写入深度
-            depthWrite : false, // 是否进行深度探测
-            lighting : true // 是否点亮图形 ， 开启此项后能点亮图形
+            color :  "rgb(255 , 255,255)",// point color
+            map : null, // point texture
+            size : 1000, // point size
+            sizeAttenuation : true, // Whether to scale with the camera
+            transparent : true, // Whether to enable transparency
+            depthTest : false, // Whether to conduct depth detection
+            depthWrite : false, // Write depth or not
+            lighting : true  // Whether to light the graphics. After this option is enabled, the graphics can be lit
 
         }
     },
-    // 一个多变形样式回调，用来计算每一个要素的样式 。 fe为该要素的geojson格式
+    // A polygon style callback that calculates the style of each element. fe is the geojson format of the element
     polygonStyleCallBack : (fe)=>{
         return {
             extrudeHeight : 1, 
             color : "rgb(255 , 255,255)"
         }
     },
-    // 一个点样式回调，用来计算每一个要素的样式 。 fe为该要素的geojson格式
+    // A point style callback that calculates the style of each element. fe is the geojson format of the element
     pointStyleCallBack : (fe)=>{
         return {
             size : 1,
             color : "rgb(255 , 255,255)"
         }
     },
-    // 一个线样式回调，用来计算每一个要素的样式 。 fe为该要素的geojson格式
+    // A line style callback that calculates the style of each element. fe is the geojson format of the element
     polylineStyleCallBack : (fe)=>{
         return {
             width : 1,
@@ -186,33 +198,33 @@ export default ShapeOption
 
 # ShpFileRender
 
-用来渲染shp文件的主类，接受一个ShapeOption 结构的参数
+The main class used to render the shp file, taking a parameter to the ShapeOption structure
 
-## 成员
+## member
 
 ### center
 
-一个three的**vector3**对象，表示着该**shp**文件的几何中心
+A  vector3 object of three that represents the geometric center of the **shp** file
 
-## 方法
+## method
 
 ### async init
 
-一个**异步函数**用来初始化和解析shp文件，当其被**resolve**时代表解析完成
+An  asynchronous function  is used to initialize and resolve the shp file, and when it is resolved , the resolution is complete
 
 ### toOrigin
 
-**用来将图形移动至原点**
+ used to move the graph to the origin
 
 ### destroy
 
-用来销毁图形并释放内存
+used to destroy graphics and free memory
 
-# 注意事项
+# matters need attention
 
-##    shpfile的文件地址务必传入绝对地址
+- The file address of shpfile must be passed to the absolute address
 
-# 参考
+# references
 
 [mrdoob/three.js: JavaScript 3D Library. (github.com)](https://github.com/mrdoob/three.js/)
 
